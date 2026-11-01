@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <!-- Díky tomuto řádku se stránka správně přizpůsobí displeji telefonu -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Octane Tales</title>
+
+  <!-- Moderní písmo z Google Fonts (potřebuje internet, jinak se použije záložní písmo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== 1) PROMĚNNÉ: barvy na jednom místě. Změň --akcent a změní se celý web ===== */
+    :root {
+      --pozadi: #0d0d0f;
+      --pozadi-karta: #17171a;
+      --text: #eaeaea;
+      --text-tlumeny: #9a9a9f;
+      --akcent: #e10600;
+    }
+
+    /* ===== 2) ZÁKLAD: platí pro celou stránku ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth; /* plynulé rolování po kliknutí na menu */
+    }
+
+    body {
+      font-family: "Inter", Arial, sans-serif;
+      background: var(--pozadi);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ===== 3) MENU nahoře ===== */
+    header {
+      position: sticky;      /* menu zůstane nahoře při rolování */
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 24px;
+      background: rgba(13, 13, 15, 0.92);
+      border-bottom: 2px solid var(--akcent);
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .logo span {
+      color: var(--akcent);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    nav a {
+      color: var(--text-tlumeny);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--akcent);
+    }
+
+    /* ===== 4) ÚVOD (velký banner) ===== */
+    .uvod {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 60px 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .uvod h1 {
+      font-size: clamp(2.5rem, 9vw, 5.5rem); /* velikost se přizpůsobí šířce displeje */
+      font-weight: 800;
+      line-height: 1.05;
+      text-transform: uppercase;
+    }
+
+    .uvod h1 span {
+      color: var(--akcent);
+    }
+
+    .uvod p {
+      margin-top: 20px;
+      max-width: 560px;
+      color: var(--text-tlumeny);
+      font-size: 1.1rem;
+    }
+
+    .tlacitko {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 28px;
+      background: var(--akcent);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 4px;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .tlacitko:hover {
+      background: #ff1a0f;
+      transform: translateY(-2px);
+    }
+
+    /* ===== 5) SEKCE (JDM, Muscle, Euro, Kontakt) ===== */
+    section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 70px 24px;
+    }
+
+    section h2 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* červená čárka pod nadpisem */
+    section h2::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--akcent);
+      margin-top: 10px;
+    }
+
+    .karta {
+      margin-top: 24px;
+      padding: 28px;
+      background: var(--pozadi-karta);
+      border-left: 4px solid var(--akcent);
+      border-radius: 4px;
+    }
+
+    .karta p {
+      color: var(--text-tlumeny);
+    }
+
+    /* Fotka u sekce: vyplní šířku a ořízne se na poměr 16:9 */
+    .foto {
+      margin-top: 24px;
+    }
+
+    .foto img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;      /* ořízne fotku, aby se nedeformovala */
+      border-radius: 4px;
+    }
+
+    .foto figcaption {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--text-tlumeny);
+    }
+
+    /* Seznam ikonických aut uvnitř karty */
+    .auta {
+      list-style: none;
+      margin-top: 22px;
+      border-top: 1px solid #2a2a2e;
+    }
+
+    .auta li {
+      padding: 16px 0;
+      border-bottom: 1px solid #2a2a2e;
+      color: var(--text-tlumeny);
+    }
+
+    .auta li strong {
+      display: block;
+      color: var(--text);
+      font-size: 1.05rem;
+      margin-bottom: 2px;
+    }
+
+    .auta li strong span {
+      color: var(--akcent);
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-left: 6px;
+    }
+
+    /* ===== 6) PATIČKA ===== */
+    footer {
+      text-align: center;
+      padding: 30px 24px;
+      color: var(--text-tlumeny);
+      font-size: 0.85rem;
+      border-top: 1px solid #222;
+    }
+
+    /* ===== 7) MOBIL: tohle platí jen na užších displejích ===== */
+    @media (max-width: 600px) {
+      header {
+        justify-content: center;
+      }
+      .uvod {
+        min-height: 70vh;
+      }
+      .karta {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== MENU ===== -->
+  <header>
+    <div class="logo">Octane <span>Tales</span></div>
+    <nav>
+      <a href="#jdm">JDM</a>
+      <a href="#muscle">Muscle car</a>
+      <a href="#euro">Euro style</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </header>
+
+  <!-- ===== ÚVOD ===== -->
+  <main>
+    <div class="uvod" id="uvod">
+      <h1>Octane <span>Tales</span></h1>
+      <p>
+        Příběhy aut, lidí a garáží, ze kterých se line vůně benzínu a kávy.
+        Podíváme se na tři světy automobilové kultury: Japonsko, Ameriku a Evropu.
+      </p>
+      <a class="tlacitko" href="#jdm">Vstoupit do garáže</a>
+    </div>
+
+    <!-- ===== JDM ===== -->
+    <section id="jdm">
+      <h2>JDM culture</h2>
+      <figure class="foto">
+        <img src="obrazky/supra.jpg" alt="Toyota Supra A80" loading="lazy">
+        <figcaption>Toyota Supra A80</figcaption>
+      </figure>
+      <div class="karta">
+        <p>
+          JDM, tedy Japanese Domestic Market, označuje auta stavěná původně pro japonský trh.
+          Fanoušky okouzlují lehkými koncepty, spolehlivými motory a obrovskými možnostmi úprav.
+          Drifting, noční jízdy po horských silnicích a ladění ve stylu tuningových dílen
+          jsou dnes slavné po celém světě.
+        </p>
+        <ul class="auta">
+          <li>
+            <strong>Nissan Skyline GT-R R34 <span>1999–2002</span></strong>
+            Plnohodnotná legenda s motorem RB26 a pohonem všech kol. Díky filmům a hrám
+            se stala snem celé generace fanoušků.
+          </li>
+          <li>
+            <strong>Toyota Supra A80 <span>1993–2002</span></strong>
+            Slavná hlavně kvůli motoru 2JZ-GTE, který vydrží obrovský výkon i po úpravách.
+            Dnes patří mezi nejhledanější japonská sportovní auta.
+          </li>
+          <li>
+            <strong>Mazda RX-7 FD <span>1992–2002</span></strong>
+            Lehká a krásně tvarovaná, s nezaměnitelným rotačním motorem.
+            Zvuk i řízení nemají ve světě aut obdoby.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== MUSCLE CAR ===== -->
+    <section id="muscle">
+      <h2>Muscle car culture</h2>
+      <figure class="foto">
+        <img src="obrazky/mustang.jpg" alt="Ford Mustang Shelby GT350" loading="lazy">
+        <figcaption>Ford Mustang Shelby GT350</figcaption>
+      </figure>
+      <div class="karta">
+        <p>
+          Muscle cary jsou ikony amerických 60. a 70. let: velké V8, hlasitý zvuk a přímá jízda
+          na čtvrtmíli. Jejich kultura stojí na surovém výkonu a ráně, kterou cítíš v hrudníku.
+          Setkání, kde se potkávají majitelé, patří k nejhlasitějším událostem roku.
+        </p>
+        <ul class="auta">
+          <li>
+            <strong>Ford Mustang <span>od 1964</span></strong>
+            Odstartoval celou třídu „pony cars“ a ukázal, že sportovní auto může být cenově dostupné.
+            Dodnes se vyrábí.
+          </li>
+          <li>
+            <strong>Dodge Charger R/T <span>1968–1970</span></strong>
+            Široké tělo, výrazná maska a velký V8 motor. Proslavil ho i film Bullitt
+            a legendární honička ulicemi San Francisca.
+          </li>
+          <li>
+            <strong>Chevrolet Camaro <span>od 1966</span></strong>
+            Odpověď Chevroletu na Mustang. Verze Z/28 vznikla pro závodní okruhy
+            a stala se symbolem sportovního Camara.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== EURO STYLE ===== -->
+    <section id="euro">
+      <h2>Euro style culture</h2>
+      <figure class="foto">
+        <img src="obrazky/bmw.jpg" alt="BMW řady 3 (E46) s M paketem" loading="lazy">
+        <figcaption>BMW řady 3 (E46) s M paketem</figcaption>
+      </figure>
+      <div class="karta">
+        <p>
+          Euro style klade důraz na čisté linie, snížený podvozek a perfektně padnoucí kola.
+          Staví se na německých a dalších evropských značkách, kde záleží na každém detailu.
+          Cílem není jen rychlost, ale vzhled, který vypadá hotově už ze stání.
+        </p>
+        <ul class="auta">
+          <li>
+            <strong>BMW M3 E30 <span>1986–1991</span></strong>
+            Vznikla jako základ pro závodní speciál a z ní se stala ikona.
+            Ostré hrany, lehké tělo a skvělé řízení z ní dělají klasiku.
+          </li>
+          <li>
+            <strong>Volkswagen Golf GTI Mk1 <span>od 1976</span></strong>
+            Kompaktní hatchback se sportovním srdcem, který založil kategorii „hot hatch“.
+            Dodnes je oblíbeným základem pro ladění.
+          </li>
+          <li>
+            <strong>Porsche 911 <span>od 1964</span></strong>
+            Motor vzadu, nezaměnitelná silueta a desítky let vývoje.
+            Pořád je to jedno z nejznámějších sportovních aut na světě.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== KONTAKT / O MNĚ ===== -->
+    <section id="kontakt">
+      <h2>Kontakt / o mně</h2>
+      <div class="karta">
+        <p>
+          Jsem nadšenec do aut a Octane Tales je můj nový projekt, na kterém se učím tvořit weby.
+          Máš zajímavý příběh nebo tip na auto? Napiš mi na
+          <a href="mailto:vojta.brozek35@gmail.com" style="color: var(--akcent);">vojta.brozek35@gmail.com</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== PATIČKA ===== -->
+  <footer>
+    &copy; 2026 Octane Tales. Vytvořeno jako první webový projekt.
+  </footer>
+
+</body>
+</html>
